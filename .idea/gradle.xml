@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="GradleSettings">
+    <option name="linkedExternalProjectsSettings">
+      <GradleProjectSettings>
+        <option name="distributionType" value="DEFAULT_WRAPPED" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="modules">
+          <set>
+            <option value="/mnt/4ad1c2cb-209a-4390-886f-5a3b5cdf8a0a/mike/grampro/android/AndroidStudioProjects/MyCards" />
+            <option value="/mnt/4ad1c2cb-209a-4390-886f-5a3b5cdf8a0a/mike/grampro/android/AndroidStudioProjects/MyCards/app" />
+          </set>
+        </option>
+        <option name="resolveModulePerSourceSet" value="false" />
+      </GradleProjectSettings>
+    </option>
+  </component>
+</project>
