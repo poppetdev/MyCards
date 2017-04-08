@@ -36,9 +36,9 @@ public class Card {
     private String backText = "";
     private List<String> tags = new ArrayList<>();
 
-    private Date lastReviewDate = null;
-    private Date nextReviewDate = null;
-    private double easiness = -1.0;
+    private Date lastReviewDate = new Date(0);
+    private Date nextReviewDate = new Date(0);
+    private double easiness = 2.5;
 
     public Card(int id, String frontText, String backText, Date nextReviewDate, Date lastReviewDate, double easiness) {
         this.id = id;
@@ -76,7 +76,7 @@ public class Card {
 
 
     public String[] getTags() {
-        return (String[]) tags.toArray();
+        return tags.toArray(new String[tags.size()]);
     }
 
 
