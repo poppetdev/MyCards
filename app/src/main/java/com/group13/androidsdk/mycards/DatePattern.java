@@ -16,13 +16,14 @@
 
 package com.group13.androidsdk.mycards;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
  * A "pattern", similar to regex for dates.
  */
 @SuppressWarnings("unused")
-public interface DatePattern {
+public interface DatePattern extends Serializable {
     /**
      * @return <code>true</code> if the given date matches the pattern, <code>false</code> otherwise
      */

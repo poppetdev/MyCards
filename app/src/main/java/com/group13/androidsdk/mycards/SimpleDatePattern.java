@@ -27,14 +27,64 @@ class SimpleDatePattern implements DatePattern {
 
     private Date start;
     private Date end;
+    private long repeatInterval = -1;
+    private int numRepeats = 0;
 
-    public SimpleDatePattern(Date start, Date end) {
+    public SimpleDatePattern(Date start, Date end, long repeatInterval, int numRepeats) {
         this.start = start;
         this.end = end;
+        this.repeatInterval = repeatInterval;
+        this.numRepeats = numRepeats;
     }
 
     @Override
     public boolean dateMatches(Date d) {
-        return d != null && start != null && end != null && d.after(start) && d.before(end);
+        if (d == null || start == null || end == null) {
+            return false;
+        }
+
+        long neededRepeats = 0;
+        if (0 < repeatInterval) {
+            neededRepeats = (d.getTime() - start.getTime()) / repeatInterval;
+        }
+        if (numRepeats < neededRepeats) {
+            neededRepeats = numRepeats;
+        }
+
+        long trueStart = start.getTime() + neededRepeats * repeatInterval;
+        long trueEnd = end.getTime() + neededRepeats * repeatInterval;
+
+        return (trueStart <= d.getTime() && d.getTime() <= trueEnd);
+    }
+
+    /**
+     * Gets the next matching date after the given <code>Date</code>. If the <code>Date</code>
+     * given is null, the current date/time is used instead.
+     *
+     * @param startDate the date to start from when searching for the next match.
+     * @return a <code>Date</code> indicating the next matching date
+     */
+    public Date nextMatch(Date startDate) {
+        if (startDate == null) {
+            startDate = new Date();
+        }
+        if (this.dateMatches(startDate)) {
+            return startDate;
+        }
+
+        long neededRepeats;
+        if ((startDate.getTime() - start.getTime()) <= 0) {
+            neededRepeats = 0;
+        } else if (0 < repeatInterval) {
+            neededRepeats = (startDate.getTime() - start.getTime()) / repeatInterval + 1;
+        } else {
+            return null;
+        }
+
+        if(numRepeats < neededRepeats) {
+            return null;
+        }
+
+        return new Date(this.start.getTime() + repeatInterval * neededRepeats);
     }
 }

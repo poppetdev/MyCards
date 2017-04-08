@@ -29,7 +29,7 @@ import java.util.Date;
 public class NotificationRule {
 
     private int id = -1;
-    private DatePattern datePattern = new SimpleDatePattern(new Date(), new Date());
+    private DatePattern datePattern = new SimpleDatePattern(new Date(), new Date(), 0, 0);
     private boolean enabled = true;
 
 
