@@ -29,26 +29,26 @@ import java.util.Date;
 public class NotificationRule {
 
     private int id = -1;
-    private DatePattern datePattern = new SimpleDatePattern(new Date(), new Date(), 0, 0);
+    private SimpleDatePattern datePattern = new SimpleDatePattern(new Date(), new Date(), 0, 0);
     private boolean enabled = true;
 
 
-    public NotificationRule(int id, DatePattern datePattern, boolean enabled) {
+    public NotificationRule(int id, SimpleDatePattern datePattern, boolean enabled) {
         this.id = id;
         this.datePattern = datePattern;
         this.enabled = enabled;
     }
 
-    public NotificationRule(int id, DatePattern datePattern) {
+    public NotificationRule(int id, SimpleDatePattern datePattern) {
         this(id, datePattern, true);
     }
 
 
-    public void setDatePattern(DatePattern dp) {
+    public void setDatePattern(SimpleDatePattern dp) {
         this.datePattern = dp;
     }
 
-    public DatePattern getDatePattern() {
+    public SimpleDatePattern getDatePattern() {
         return this.datePattern;
     }
 
