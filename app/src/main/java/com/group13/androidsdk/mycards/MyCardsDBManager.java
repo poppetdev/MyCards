@@ -24,6 +24,12 @@ import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -34,6 +40,7 @@ import java.util.List;
 class MyCardsDBManager extends SQLiteOpenHelper implements NotificationStorage, CardStorage {
 
     private Context context = null;
+    private static final String doNotDisturbKeyName = "notifications.do_not_disturb";
 
     MyCardsDBManager(Context context,
                      String name,
@@ -63,7 +70,9 @@ class MyCardsDBManager extends SQLiteOpenHelper implements NotificationStorage, 
 
     private static ContentValues cardToContentValues(Card card) {
         ContentValues cv = new ContentValues();
-        cv.put("_id", card.getId());
+        if(0 <= card.getId()) {
+            cv.put("_id", card.getId());
+        }
         cv.put("nextReviewDate", card.getNextReviewDate().getTime());
         cv.put("lastReviewDate", card.getLastReviewDate().getTime());
         cv.put("easiness", card.getEasiness());
@@ -73,14 +82,15 @@ class MyCardsDBManager extends SQLiteOpenHelper implements NotificationStorage, 
     }
 
     @Override
-    public void insertOrUpdateCard(Card card) {
+    public long insertOrUpdateCard(Card card) {
         ContentValues cv = cardToContentValues(card);
         String[] whereArgs = {String.valueOf(card.getId())};
         SQLiteDatabase db = this.getWritableDatabase();
+        long inserted_rowid = -1;
         try {
             db.beginTransaction();
             db.delete("card", "_id = ?", whereArgs);
-            db.insert("card", null, cv);
+            inserted_rowid = db.insert("card", null, cv);
             ContentValues tagValues = new ContentValues();
             tagValues.put("cardId", card.getId());
             for (String tagName : card.getTags()) {
@@ -94,10 +104,11 @@ class MyCardsDBManager extends SQLiteOpenHelper implements NotificationStorage, 
             db.endTransaction();
             db.close();
         }
+        return inserted_rowid;
     }
 
     private Card cardFromCursor(Cursor cursor) {
-        if(cursor.isBeforeFirst() || cursor.isAfterLast()) {
+        if (cursor.isBeforeFirst() || cursor.isAfterLast()) {
             return null;
         }
 
@@ -115,7 +126,7 @@ class MyCardsDBManager extends SQLiteOpenHelper implements NotificationStorage, 
         cursor.moveToFirst();
         do {
             cards.add(cardFromCursor(cursor));
-        } while(cursor.moveToNext());
+        } while (cursor.moveToNext());
 
         return cards.toArray(new Card[cards.size()]);
     }
@@ -126,14 +137,26 @@ class MyCardsDBManager extends SQLiteOpenHelper implements NotificationStorage, 
         String[] args = {String.valueOf(cardId)};
         Cursor c = db.rawQuery("SELECT * FROM card WHERE _id = ?;", args);
         c.moveToFirst();
-        return cardFromCursor(c);
+        Card ret = cardFromCursor(c);
+
+        // Cleanup
+        c.close();
+        db.close();
+
+        return ret;
     }
 
     @Override
     public Card[] getAllCards() {
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor c = db.rawQuery("SELECT * FROM card;", null);
-        return cardArrayFromCursor(c);
+        Card[] ret = cardArrayFromCursor(c);
+
+        // Cleanup
+        c.close();
+        db.close();
+
+        return ret;
     }
 
     @Override
@@ -141,50 +164,203 @@ class MyCardsDBManager extends SQLiteOpenHelper implements NotificationStorage, 
         SQLiteDatabase db = this.getReadableDatabase();
         String[] args = {String.valueOf(d.getTime())};
         Cursor c = db.rawQuery("SELECT * FROM card WHERE nextReviewDate < ?;", args);
-        return cardArrayFromCursor(c);
+        Card[] ret = cardArrayFromCursor(c);
+
+        // Cleanup
+        c.close();
+        db.close();
+
+        return ret;
     }
 
     @Override
     public void deleteNotificationRuleById(int ruleId) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        Object[] args = {ruleId};
+        try {
+            db.beginTransaction();
+            db.execSQL("DELETE FROM notificationRule WHERE _id = ?;", args);
+            db.setTransactionSuccessful();
+        } catch (SQLiteException e) {
+            Log.e("DBManager",
+                    "deleteNotificationRuleById(" + ruleId + ") failed with SQLiteException: " +
+                            e.getLocalizedMessage()
+            );
+        } finally {
+            db.endTransaction();
+            db.close();
+        }
+    }
 
+    private static byte[] serializeToByteArray(Serializable obj) {
+        try {
+            ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
+            (new ObjectOutputStream(byteStream)).writeObject(obj);
+            return byteStream.toByteArray();
+        } catch (IOException e) {
+            return null;
+        }
+    }
+
+    private static Object deserializeFromByteArray(byte[] arr) {
+        try {
+            ByteArrayInputStream byteStream = new ByteArrayInputStream(arr);
+            return (new ObjectInputStream(byteStream)).readObject();
+        } catch (IOException e) {
+            return null;
+        } catch (ClassNotFoundException e) {
+            return null;
+        }
+    }
+
+    private static ContentValues ruleToContentValues(NotificationRule rule) {
+        Date nextMatch = rule.getDatePattern().nextMatch(new Date());
+        long nextMatchEpoch = nextMatch != null ? nextMatch.getTime() : Long.MAX_VALUE;
+
+        ContentValues cv = new ContentValues();
+        if(0 <= rule.getId()) {
+            cv.put("_id", rule.getId());
+        }
+
+        cv.put("enabled", rule.isEnabled());
+        cv.put("nextMatchDate", nextMatchEpoch);
+        cv.put("datePattern", serializeToByteArray(rule.getDatePattern()));
+        return cv;
     }
 
     @Override
-    public void insertOrUpdateNotificationRule(NotificationRule rule) {
+    public long insertOrUpdateNotificationRule(NotificationRule rule) {
+        ContentValues cv = ruleToContentValues(rule);
+        String[] whereArgs = {String.valueOf(rule.getId())};
+        SQLiteDatabase db = this.getWritableDatabase();
+        long inserted_rowid = -1;
+        try {
+            db.beginTransaction();
+            db.delete("notificationRule", "_id = ?", whereArgs);
+            inserted_rowid = db.insert("notificationRule", null, cv);
+            db.setTransactionSuccessful();
+        } catch (SQLiteException e) {
+            Log.e("DBManager", "insertOrUpdateNotificationRule(rule): " + e.getLocalizedMessage());
+        } finally {
+            db.endTransaction();
+            db.close();
+        }
+        return inserted_rowid;
+    }
 
+    private NotificationRule ruleFromCursor(Cursor cursor) {
+        if (cursor.isBeforeFirst() || cursor.isAfterLast()) {
+            return null;
+        }
+
+        return new NotificationRule(cursor.getInt(cursor.getColumnIndex("_id")),
+                (SimpleDatePattern) deserializeFromByteArray(cursor.getBlob(cursor.getColumnIndex(
+                        "datePattern"))),
+                (cursor.getInt(cursor.getColumnIndex("enabled")) == 1)
+        );
+    }
+
+    private NotificationRule[] ruleArrayFromCursor(Cursor cursor) {
+        List<NotificationRule> rules = new ArrayList<>();
+        cursor.moveToFirst();
+        do {
+            rules.add(ruleFromCursor(cursor));
+        } while (cursor.moveToNext());
+
+        return rules.toArray(new NotificationRule[rules.size()]);
     }
 
     @Override
     public NotificationRule getNotificationRuleById(int ruleId) {
-        return null;
+        SQLiteDatabase db = this.getReadableDatabase();
+        String[] args = {String.valueOf(ruleId)};
+        Cursor c = db.rawQuery("SELECT * FROM notificationRule WHERE _id = ?;", args);
+        c.moveToFirst();
+        NotificationRule ret = ruleFromCursor(c);
+
+        // Cleanup
+        c.close();
+        db.close();
+
+        return ret;
     }
 
     @Override
     public NotificationRule[] getAllNotificationRules() {
-        return new NotificationRule[0];
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor c = db.rawQuery("SELECT * FROM notificationRule;", null);
+        NotificationRule[] ret = ruleArrayFromCursor(c);
+
+        // Cleanup
+        c.close();
+        db.close();
+
+        return ret;
     }
 
     @Override
-    public NotificationRule[] getAllNotificationRulesForDate(Date d) {
-        return new NotificationRule[0];
+    public NotificationRule[] getAllNotificationRulesBeforeDate(Date d) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        String[] args = {String.valueOf(d.getTime())};
+        Cursor c = db.rawQuery("SELECT * FROM notificationRule WHERE nextMatchDate <= ?;", args);
+        NotificationRule[] ret = ruleArrayFromCursor(c);
+
+        // Cleanup
+        c.close();
+        db.close();
+
+        return ret;
     }
 
     @Override
     public void setDoNotDisturb(boolean enabled) {
-
+        ContentValues cv = new ContentValues();
+        cv.put("key", doNotDisturbKeyName);
+        cv.put("valueInt", enabled ? 1 : 0);
+        String[] args = {doNotDisturbKeyName};
+        SQLiteDatabase db = this.getWritableDatabase();
+        try {
+            db.beginTransaction();
+            db.delete("keyValueStore", "key = ?", args);
+            db.insert("keyValueStore", null, cv);
+            db.setTransactionSuccessful();
+        } catch (SQLiteException e) {
+            Log.e("DBManager", "setDoNotDisturb(): " + e.getLocalizedMessage());
+        } finally {
+            db.endTransaction();
+            db.close();
+        }
     }
 
     @Override
     public boolean getDoNotDisturb() {
-        return false;
+        SQLiteDatabase db = this.getReadableDatabase();
+        String[] args = {doNotDisturbKeyName};
+        Cursor c = db.rawQuery("SELECT valueInt FROM keyValueStore WHERE key = ?;", args);
+        c.moveToFirst();
+        boolean ret = c.getInt(c.getColumnIndex("valueInt")) == 1;
+
+        // Cleanup
+        c.close();
+        db.close();
+
+        return ret;
     }
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        db.beginTransaction();
         try {
+            db.beginTransaction();
             db.execSQL(context.getString(R.string.create_card_table_sql));
             db.execSQL(context.getString(R.string.create_tag_table_sql));
+            db.execSQL(context.getString(R.string.create_notificationRule_table_sql));
+            db.execSQL(context.getString(R.string.create_keyvalue_table_sql));
+
+            ContentValues cv = new ContentValues();
+            cv.put("key", doNotDisturbKeyName);
+            cv.put("valueInt", 0);
+            db.insert("keyValueStore", null, cv);
+
             db.setTransactionSuccessful();
         } catch (SQLiteException e) {
             Log.e("DBManager", "onCreate(db): " + e.getLocalizedMessage());

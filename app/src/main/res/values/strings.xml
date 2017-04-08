@@ -38,4 +38,22 @@
                 ON DELETE CASCADE
         );
     </string>
+    <string name="create_notificationRule_table_sql" translatable="false">
+        CREATE TABLE notificationRule (
+            _id INTEGER PRIMARY KEY AUTOINCREMENT,
+            enabled INTEGER(1) NOT NULL,
+            nextMatchDate INTEGER NOT NULL,
+            datePattern BLOB NOT NULL
+        );
+    </string>
+    <string name="create_keyvalue_table_sql">
+        CREATE TABLE keyValueStore (
+            key TEXT PRIMARY KEY,
+            valueInt INTEGER DEFAULT NULL,
+            valueReal REAL DEFAULT NULL,
+            valueText TEXT DEFAULT NULL,
+            valueBlob BLOB DEFAULT NULL
+        )
+
+    </string>
 </resources>
