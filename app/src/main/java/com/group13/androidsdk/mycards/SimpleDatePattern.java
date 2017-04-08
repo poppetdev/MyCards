@@ -35,6 +35,12 @@ class SimpleDatePattern implements DatePattern {
         this.end = end;
         this.repeatInterval = repeatInterval;
         this.numRepeats = numRepeats;
+
+        if(this.end.getTime() < this.start.getTime()) {
+            Date tmp = this.end;
+            this.end = start;
+            this.start = tmp;
+        }
     }
 
     @Override
@@ -55,6 +61,39 @@ class SimpleDatePattern implements DatePattern {
         long trueEnd = end.getTime() + neededRepeats * repeatInterval;
 
         return (trueStart <= d.getTime() && d.getTime() <= trueEnd);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+
+        SimpleDatePattern that = (SimpleDatePattern) o;
+
+        if (repeatInterval != that.repeatInterval) {
+            return false;
+        }
+        if (numRepeats != that.numRepeats) {
+            return false;
+        }
+        if (start != null ? !start.equals(that.start) : that.start != null) {
+            return false;
+        }
+        return end != null ? end.equals(that.end) : that.end == null;
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = start != null ? start.hashCode() : 0;
+        result = 31 * result + (end != null ? end.hashCode() : 0);
+        result = 31 * result + (int) (repeatInterval ^ (repeatInterval >>> 32));
+        result = 31 * result + numRepeats;
+        return result;
     }
 
     /**
@@ -87,4 +126,5 @@ class SimpleDatePattern implements DatePattern {
 
         return new Date(this.start.getTime() + repeatInterval * neededRepeats);
     }
+
 }
