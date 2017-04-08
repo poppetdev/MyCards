@@ -23,9 +23,33 @@ import java.util.Date;
  */
 @SuppressWarnings("unused")
 interface CardStorage {
+    /**
+     * Deletes the card with the given ID from the storage
+     */
     void deleteCardById(int cardId);
-    void insertOrUpdateCard(Card card);
+
+    /**
+     * If there is a card already in the storage that has the same ID as the given card, that
+     * card is updated so its fields match those of the given card. If there is no such card, a
+     * new card is inserted into the storage. If the given card has ID -1, a new ID for the card
+     * will be returned.
+     */
+    long insertOrUpdateCard(Card card);
+
+    /**
+     * @return the card with the given ID from the storage (<code>null</code> if no such card
+     * exists)
+     */
     Card getCardById(int cardId);
+
+    /**
+     * @return an array of all cards in the storage (empty array if no cards)
+     */
     Card[] getAllCards();
+
+    /**
+     * @return an array of cards scheduled to be reviewed before the given <code>Date</code>
+     * (empty array if no cards)
+     */
     Card[] getCardsForReviewBefore(Date d);
 }

@@ -24,12 +24,40 @@ import java.util.Date;
 @SuppressWarnings("unused")
 interface NotificationStorage {
 
+    /**
+     * Deletes the notification rule with the given Id
+     */
     void deleteNotificationRuleById(int ruleId);
-    void insertOrUpdateNotificationRule(NotificationRule rule);
+
+    /**
+     * If there is already a notification rule with the same ID as the given rule, the existing
+     * rule in storage is updated to match the given rule. If no rule with matching ID exists,
+     * the given rule is inserted into the storage as a new rule.
+     *
+     * @return The new ID of the rule in the storage (same as given if updating, new ID if
+     * inserting)
+     */
+    long insertOrUpdateNotificationRule(NotificationRule rule);
+
+    /**
+     * Gets the stored notification rule with ID matching <code>ruleID</code>. If no such rule
+     * exists, this method returns <code>null</code>.
+     */
     NotificationRule getNotificationRuleById(int ruleId);
+
+    /**
+     * Gets all notification rules in storage as an array. If there are no rules, an empty array
+     * is returned.
+     */
     NotificationRule[] getAllNotificationRules();
-    NotificationRule[] getAllNotificationRulesForDate(Date d);
+
+    /**
+     * Gets all notification rules in storage for which the next match occurs at or before given
+     * Date. If there are no such rules, returns an empty array.
+     */
+    NotificationRule[] getAllNotificationRulesBeforeDate(Date d);
 
     void setDoNotDisturb(boolean enabled);
+
     boolean getDoNotDisturb();
 }
