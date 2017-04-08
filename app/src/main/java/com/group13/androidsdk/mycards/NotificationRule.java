@@ -64,4 +64,37 @@ public class NotificationRule {
         return this.id;
     }
 
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+
+        NotificationRule that = (NotificationRule) o;
+
+        if (id != that.id) {
+            return false;
+        }
+        if (enabled != that.enabled) {
+            return false;
+        }
+        return datePattern != null ? datePattern.equals(that.datePattern) : that.datePattern ==
+                null;
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = id;
+        result = 31 * result + (datePattern != null ? datePattern.hashCode() : 0);
+        result = 31 * result + (enabled ? 1 : 0);
+        return result;
+    }
 }
