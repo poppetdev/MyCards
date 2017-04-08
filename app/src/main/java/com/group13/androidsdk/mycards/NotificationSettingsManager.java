@@ -36,6 +36,11 @@ public class NotificationSettingsManager {
 
     private List<NotificationRule> rules = new ArrayList<>();
     private boolean doNotDisturbEnabled = false;
+    private NotificationStorage ns = null;
+
+    public NotificationSettingsManager(NotificationStorage ns) {
+        this.ns = ns;
+    }
 
     public void addRule(NotificationRule nr) {
         this.rules.add(nr);
@@ -48,7 +53,7 @@ public class NotificationSettingsManager {
      * @param ruleId The id of the rule to remove
      */
     public void removeRule(int ruleId) {
-        MyCardsDBManager.getInstance().deleteNotificationRuleById(ruleId);
+        ns.deleteNotificationRuleById(ruleId);
         this.reloadRules();
     }
 
