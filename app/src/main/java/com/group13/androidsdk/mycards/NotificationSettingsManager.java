@@ -19,7 +19,6 @@ package com.group13.androidsdk.mycards;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.ListIterator;
 
 /**
  * Basically handles all the backend functionality of the notification settings UI. As with the
