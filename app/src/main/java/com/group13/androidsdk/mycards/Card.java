@@ -40,7 +40,12 @@ public class Card {
     private Date nextReviewDate = new Date(0);
     private double easiness = 2.5;
 
-    public Card(int id, String frontText, String backText, Date nextReviewDate, Date lastReviewDate, double easiness) {
+    public Card(int id,
+                String frontText,
+                String backText,
+                Date nextReviewDate,
+                Date lastReviewDate,
+                double easiness) {
         this.id = id;
         this.frontText = frontText;
         this.backText = backText;
@@ -72,6 +77,10 @@ public class Card {
 
     public int getId() {
         return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
 
@@ -120,4 +129,53 @@ public class Card {
     }
 
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+
+        Card card = (Card) o;
+
+        if (id != card.id) {
+            return false;
+        }
+        if (Double.compare(card.easiness, easiness) != 0) {
+            return false;
+        }
+        if (!frontText.equals(card.frontText)) {
+            return false;
+        }
+        if (!backText.equals(card.backText)) {
+            return false;
+        }
+        if (!tags.equals(card.tags)) {
+            return false;
+        }
+        if (lastReviewDate != null ? !lastReviewDate.equals(card.lastReviewDate) : card
+                .lastReviewDate != null) {
+            return false;
+        }
+        return nextReviewDate != null ? nextReviewDate.equals(card.nextReviewDate) : card
+                .nextReviewDate == null;
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result;
+        long temp;
+        result = id;
+        result = 31 * result + frontText.hashCode();
+        result = 31 * result + backText.hashCode();
+        result = 31 * result + tags.hashCode();
+        result = 31 * result + (lastReviewDate != null ? lastReviewDate.hashCode() : 0);
+        result = 31 * result + (nextReviewDate != null ? nextReviewDate.hashCode() : 0);
+        temp = Double.doubleToLongBits(easiness);
+        result = 31 * result + (int) (temp ^ (temp >>> 32));
+        return result;
+    }
 }
