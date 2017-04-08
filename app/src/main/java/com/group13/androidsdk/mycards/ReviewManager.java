@@ -17,6 +17,8 @@
 package com.group13.androidsdk.mycards;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -35,21 +37,49 @@ import java.util.List;
  */
 @SuppressWarnings("unused")
 public class ReviewManager {
-    List<Card> cardsForReview = new ArrayList<>();
+    private List<Card> cardsForReview = new ArrayList<>();
+    private CardStorage cardStorage = null;
+    private int curCardIndex = 0;
+
+    public ReviewManager(CardStorage cardStorage) {
+        this.cardStorage = cardStorage;
+        reloadCardList();
+    }
+
+    /**
+     * Reloads the card list from the persistent card storage.
+     */
+    private void reloadCardList() {
+        cardsForReview.clear();
+        Card[] cards = cardStorage.getCardsForReviewBefore(new Date());
+        Collections.addAll(cardsForReview, cards);
+        curCardIndex = 0;
+    }
 
     /**
      * Gets the next card from the queue.
      */
-    Card getNextCard() {
-        // TODO: Implement this
-        return null;
+    public Card getNextCard() {
+        if (!hasNextCard()) {
+            return null;
+        }
+
+        return cardsForReview.get(curCardIndex++);
+    }
+
+    /**
+     * @return <code>true</code> if there are more cards, false otherwise
+     */
+    public boolean hasNextCard() {
+        return curCardIndex < cardsForReview.size();
     }
 
     /**
      * Shuffles the queue to put the cards in random order.
      */
-    void shuffleCards() {
-        // TODO: Implement this
+    public void shuffleCards() {
+        Collections.shuffle(cardsForReview);
+        curCardIndex = 0;
     }
 
     /**
@@ -60,14 +90,14 @@ public class ReviewManager {
      *              corresponding card in the database
      * @param score the user's score of the card
      */
-    void finishReview(Card c, int score) {
+    public void finishReview(Card c, int score) {
         // TODO: Implement this
     }
 
     /**
      * Gets the number of cards in the queue
      */
-    int getNumCards() {
+    public int getNumCards() {
         return this.cardsForReview.size();
     }
 }

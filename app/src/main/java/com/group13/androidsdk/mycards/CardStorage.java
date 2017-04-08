@@ -16,6 +16,8 @@
 
 package com.group13.androidsdk.mycards;
 
+import java.util.Date;
+
 /**
  * An interface for storage and retrieval of <code>Card</code> objects.
  */
@@ -25,4 +27,5 @@ interface CardStorage {
     void insertOrUpdateCard(Card card);
     Card getCardById(int cardId);
     Card[] getAllCards();
+    Card[] getCardsForReviewBefore(Date d);
 }
