@@ -16,6 +16,8 @@
 
 package com.group13.androidsdk.mycards;
 
+import java.util.Date;
+
 /**
  * An interface for storage and retrieval of notification settings.
  */
@@ -26,6 +28,7 @@ interface NotificationStorage {
     void insertOrUpdateNotificationRule(NotificationRule rule);
     NotificationRule getNotificationRuleById(int ruleId);
     NotificationRule[] getAllNotificationRules();
+    NotificationRule[] getAllNotificationRulesForDate(Date d);
 
     void setDoNotDisturb(boolean enabled);
     boolean getDoNotDisturb();

@@ -165,6 +165,11 @@ class MyCardsDBManager extends SQLiteOpenHelper implements NotificationStorage, 
     }
 
     @Override
+    public NotificationRule[] getAllNotificationRulesForDate(Date d) {
+        return new NotificationRule[0];
+    }
+
+    @Override
     public void setDoNotDisturb(boolean enabled) {
 
     }
