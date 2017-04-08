@@ -16,6 +16,13 @@
 
 package com.group13.androidsdk.mycards;
 
+
+import android.app.IntentService;
+import android.app.Service;
+import android.content.Intent;
+import android.os.IBinder;
+
+
 /**
  * A daemon that handles notification generation.
  * <br>
@@ -23,24 +30,24 @@ package com.group13.androidsdk.mycards;
  * periodically update the notification schedule automatically, and if so how often.
  * <br>
  * Another noteworthy point is that this class is a singleton, so if necessary you would call it
- * with <code>NotificationDaemon.getInstance().updateSchedule()</code> rather than instantiating
- * it with <code>new NotificationDaemon()</code>
+ * with <code>NotificationService.getInstance().updateSchedule()</code> rather than instantiating
+ * it with <code>new NotificationService()</code>
  */
-class NotificationDaemon {
-    private static final NotificationDaemon ourInstance = new NotificationDaemon();
-
-    static NotificationDaemon getInstance() {
-        return ourInstance;
+public class NotificationService extends IntentService {
+    public NotificationService() {
+        super("MyCardsNotificationService");
     }
 
-    private NotificationDaemon() {
-
+    @Override
+    protected void onHandleIntent(Intent intent) {
+        // Normally we would do some work here, like download a file.
+        // For our sample, we just sleep for 5 seconds.
+        try {
+            Thread.sleep(5000);
+        } catch (InterruptedException e) {
+            // Restore interrupt status.
+            Thread.currentThread().interrupt();
+        }
     }
 
-    /**
-     * Manually request that the Daemon updates the schedule.
-     */
-    public void updateSchedule() {
-        // TODO: Implement this
-    }
 }
