@@ -43,6 +43,7 @@ public class NotificationSettingsManager {
 
     public void addRule(NotificationRule nr) {
         this.rules.add(nr);
+        ns.insertOrUpdateNotificationRule(nr);
     }
 
     /**
@@ -57,11 +58,12 @@ public class NotificationSettingsManager {
     }
 
     private void reloadRules() {
-        // TODO: Implement this
+        this.setRules(ns.getAllNotificationRules());
     }
 
     public void setDoNotDisturbEnabled(boolean enabled) {
         this.doNotDisturbEnabled = enabled;
+        ns.setDoNotDisturb(enabled);
     }
 
     public boolean isDoNotDisturbEnabled() {
