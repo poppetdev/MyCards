@@ -46,7 +46,7 @@
             datePattern BLOB NOT NULL
         );
     </string>
-    <string name="create_keyvalue_table_sql">
+    <string name="create_keyvalue_table_sql" translatable="false">
         CREATE TABLE keyValueStore (
             key TEXT PRIMARY KEY,
             valueInt INTEGER DEFAULT NULL,

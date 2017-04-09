@@ -18,20 +18,12 @@ package com.group13.androidsdk.mycards;
 
 
 import android.app.IntentService;
-import android.app.Service;
 import android.content.Intent;
-import android.os.IBinder;
 
 
 /**
  * A daemon that handles notification generation.
  * <br>
- * There are still quite a few things to work out on this class, such as whether it will
- * periodically update the notification schedule automatically, and if so how often.
- * <br>
- * Another noteworthy point is that this class is a singleton, so if necessary you would call it
- * with <code>NotificationService.getInstance().updateSchedule()</code> rather than instantiating
- * it with <code>new NotificationService()</code>
  */
 public class NotificationService extends IntentService {
     public NotificationService() {
@@ -40,12 +32,9 @@ public class NotificationService extends IntentService {
 
     @Override
     protected void onHandleIntent(Intent intent) {
-        // Normally we would do some work here, like download a file.
-        // For our sample, we just sleep for 5 seconds.
         try {
             Thread.sleep(5000);
         } catch (InterruptedException e) {
-            // Restore interrupt status.
             Thread.currentThread().interrupt();
         }
     }

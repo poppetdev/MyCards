@@ -16,7 +16,6 @@
 
 package com.group13.androidsdk.mycards;
 
-import android.database.sqlite.SQLiteDatabase;
 import android.support.test.InstrumentationRegistry;
 
 import org.junit.After;
@@ -33,7 +32,7 @@ import static org.junit.Assert.*;
  * Unit tests for MyCardsDBManager
  */
 public class MyCardsDBManagerTest {
-    MyCardsDBManager dbm = null;
+    private MyCardsDBManager dbm = null;
     @Before
     public void setUp() throws Exception {
         InstrumentationRegistry.getTargetContext().deleteDatabase("mycardsdb2");
