@@ -23,7 +23,9 @@
             backText TEXT NOT NULL DEFAULT \'\',
             easiness REAL NOT NULL DEFAULT 2.5,
             nextReviewDate INTEGER,
-            lastReviewDate INTEGER
+            lastReviewDate INTEGER,
+            numRepetitions INTEGER,
+            lastIncorrectRep INTEGER
         );
     </string>
     <string name="create_tag_table_sql" translatable="false">

@@ -70,7 +70,7 @@ class MyCardsDBManager extends SQLiteOpenHelper implements NotificationStorage, 
 
     private static ContentValues cardToContentValues(Card card) {
         ContentValues cv = new ContentValues();
-        if(0 <= card.getId()) {
+        if (0 <= card.getId()) {
             cv.put("_id", card.getId());
         }
         cv.put("nextReviewDate", card.getNextReviewDate().getTime());
@@ -78,6 +78,8 @@ class MyCardsDBManager extends SQLiteOpenHelper implements NotificationStorage, 
         cv.put("easiness", card.getEasiness());
         cv.put("frontText", card.getFrontText());
         cv.put("backText", card.getBackText());
+        cv.put("numRepetitions", card.getNumRepetitions());
+        cv.put("lastIncorrectRep", card.getLastIncorrectRep());
         return cv;
     }
 
@@ -107,7 +109,11 @@ class MyCardsDBManager extends SQLiteOpenHelper implements NotificationStorage, 
         return inserted_rowid;
     }
 
-    private Card cardFromCursor(Cursor cursor) {
+    /**
+     * Converts the record currently pointed by the given Cursor into a Card object. Note that
+     * this method does NOT add tags to the card.
+     */
+    private static Card cardFromCursor(Cursor cursor) {
         if (cursor.isBeforeFirst() || cursor.isAfterLast()) {
             return null;
         }
@@ -117,11 +123,17 @@ class MyCardsDBManager extends SQLiteOpenHelper implements NotificationStorage, 
                 cursor.getString(cursor.getColumnIndex("backText")),
                 new Date(cursor.getLong(cursor.getColumnIndex("nextReviewDate"))),
                 new Date(cursor.getLong(cursor.getColumnIndex("lastReviewDate"))),
-                cursor.getDouble(cursor.getColumnIndex("easiness"))
+                cursor.getDouble(cursor.getColumnIndex("easiness")),
+                cursor.getInt(cursor.getColumnIndex("numRepetitions")),
+                cursor.getInt(cursor.getColumnIndex("lastIncorrectRep"))
         );
     }
 
-    private Card[] cardArrayFromCursor(Cursor cursor) {
+    /**
+     * Produces an array of cards from the given Cursor (assumed to contain records from the Card
+     * table). Note that this method does NOT add tags to the cards.
+     */
+    private static Card[] cardArrayFromCursor(Cursor cursor) {
         List<Card> cards = new ArrayList<>();
         cursor.moveToFirst();
         do {
@@ -131,6 +143,22 @@ class MyCardsDBManager extends SQLiteOpenHelper implements NotificationStorage, 
         return cards.toArray(new Card[cards.size()]);
     }
 
+    private static void addCardTagsFromDb(Card card, SQLiteDatabase db) {
+        if(card == null) {
+            return;
+        }
+        Cursor c = db.rawQuery("SELECT * FROM tag WHERE cardId = ?;",
+                new String[]{String.valueOf(card.getId())}
+        );
+
+        if (!c.moveToFirst()) {
+            return;
+        }
+        do {
+            card.addTag(c.getString(c.getColumnIndex("tagName")));
+        } while (c.moveToNext());
+    }
+
     @Override
     public Card getCardById(int cardId) {
         SQLiteDatabase db = this.getReadableDatabase();
@@ -138,6 +166,7 @@ class MyCardsDBManager extends SQLiteOpenHelper implements NotificationStorage, 
         Cursor c = db.rawQuery("SELECT * FROM card WHERE _id = ?;", args);
         c.moveToFirst();
         Card ret = cardFromCursor(c);
+        addCardTagsFromDb(ret, db);
 
         // Cleanup
         c.close();
@@ -151,7 +180,9 @@ class MyCardsDBManager extends SQLiteOpenHelper implements NotificationStorage, 
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor c = db.rawQuery("SELECT * FROM card;", null);
         Card[] ret = cardArrayFromCursor(c);
-
+        for (Card card : ret) {
+            addCardTagsFromDb(card, db);
+        }
         // Cleanup
         c.close();
         db.close();
@@ -165,6 +196,9 @@ class MyCardsDBManager extends SQLiteOpenHelper implements NotificationStorage, 
         String[] args = {String.valueOf(d.getTime())};
         Cursor c = db.rawQuery("SELECT * FROM card WHERE nextReviewDate < ?;", args);
         Card[] ret = cardArrayFromCursor(c);
+        for (Card card : ret) {
+            addCardTagsFromDb(card, db);
+        }
 
         // Cleanup
         c.close();
@@ -218,7 +252,7 @@ class MyCardsDBManager extends SQLiteOpenHelper implements NotificationStorage, 
         long nextMatchEpoch = nextMatch != null ? nextMatch.getTime() : Long.MAX_VALUE;
 
         ContentValues cv = new ContentValues();
-        if(0 <= rule.getId()) {
+        if (0 <= rule.getId()) {
             cv.put("_id", rule.getId());
         }
 

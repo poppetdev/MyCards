@@ -48,10 +48,12 @@ public class MyCardsDBManagerTest {
     @Test
     public void deleteCardById() throws Exception {
         List<Card> cards = new ArrayList<>();
-        cards.add(new Card(1, "frontside", "backside", new Date(), new Date(), 2.2));
-        cards.add(new Card(2, "", "", new Date(), new Date(), 2.2));
-        cards.add(new Card(3, "f3", "b3", new Date(0), new Date(0), -1));
-        cards.add(new Card(700, "front4", "back4", new Date(), new Date(), 2.2));
+        cards.add(new Card(1, "frontside", "backside", new Date(), new Date(), 2.2, 1, 0));
+        cards.add(new Card(2, "", "", new Date(), new Date(), 2.2, 2, 1));
+        cards.add(new Card(3, "f3", "b3", new Date(0), new Date(0), -1, 0, 1));
+        cards.add(new Card(700, "front4", "back4", new Date(), new Date(), 2.2, 1, 0));
+        cards.get(1).addTag("mytag1");
+        cards.get(1).addTag("mytag2");
 
         for(Card card : cards) {
             card.setId((int) dbm.insertOrUpdateCard(card));
@@ -79,10 +81,12 @@ public class MyCardsDBManagerTest {
     @Test
     public void insertOrUpdateCard() throws Exception {
         List<Card> cards = new ArrayList<>();
-        cards.add(new Card(-1, "frontside", "backside", new Date(), new Date(), 2.2));
-        cards.add(new Card(-1, "", "", new Date(), new Date(), 2.2));
-        cards.add(new Card(-1, "f3", "b3", new Date(0), new Date(0), -1));
-        cards.add(new Card(700, "front4", "back4", new Date(), new Date(), 2.2));
+        cards.add(new Card(1, "frontside", "backside", new Date(), new Date(), 2.2, 1, 0));
+        cards.add(new Card(2, "", "", new Date(), new Date(), 2.2, 2, 1));
+        cards.add(new Card(3, "f3", "b3", new Date(0), new Date(0), -1, 0, 1));
+        cards.add(new Card(700, "front4", "back4", new Date(), new Date(), 2.2, 1, 0));
+        cards.get(1).addTag("mytag1");
+        cards.get(1).addTag("mytag2");
 
         for(Card card : cards) {
             card.setId((int) dbm.insertOrUpdateCard(card));
@@ -98,10 +102,13 @@ public class MyCardsDBManagerTest {
     @Test
     public void getCardById() throws Exception {
         List<Card> cards = new ArrayList<>();
-        cards.add(new Card(1, "frontside", "backside", new Date(), new Date(), 2.2));
-        cards.add(new Card(2, "", "", new Date(), new Date(), 2.2));
-        cards.add(new Card(3, "f3", "b3", new Date(0), new Date(0), -1));
-        cards.add(new Card(700, "front4", "back4", new Date(), new Date(), 2.2));
+        cards.add(new Card(1, "frontside", "backside", new Date(), new Date(), 2.2, 1, 0));
+        cards.add(new Card(2, "", "", new Date(), new Date(), 2.2, 2, 1));
+        cards.add(new Card(3, "f3", "b3", new Date(0), new Date(0), -1, 0, 1));
+        cards.add(new Card(700, "front4", "back4", new Date(), new Date(), 2.2, 1, 0));
+
+        cards.get(1).addTag("mytag1");
+        cards.get(1).addTag("mytag2");
 
         for(Card card : cards) {
             card.setId((int) dbm.insertOrUpdateCard(card));

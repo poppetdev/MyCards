@@ -32,26 +32,69 @@ public class Card {
     @SuppressWarnings("FieldCanBeLocal")
     private int id = -1;
 
+    /**
+     * Front text of the card (the "question")
+     */
     private String frontText = "";
+
+    /**
+     * Back text of the card (the "answer")
+     */
     private String backText = "";
+
+    /**
+     * Tags for easy categorization
+     */
     private List<String> tags = new ArrayList<>();
 
     private Date lastReviewDate = new Date(0);
     private Date nextReviewDate = new Date(0);
+
+    /**
+     * "Easiness": This is the Easiness Factor (E-factor, EF) from the SuperMemo algorithm
+     */
     private double easiness = 2.5;
 
+    /**
+     * Number of times this card has been reviewed
+     */
+    private int numRepetitions = 0;
+
+    /**
+     * Index of the most recent repetition for which this card was scored less than 3
+     */
+    private int lastIncorrectRep = 0;
+
+    /**
+     * Constructor (all members except tags). Not advised for contructing new Cards, but for
+     * recreating pre-existing Cards.
+     *
+     * @see Card(String, String)
+     */
     public Card(int id,
                 String frontText,
                 String backText,
                 Date nextReviewDate,
                 Date lastReviewDate,
-                double easiness) {
+                double easiness,
+                int numRepetitions,
+                int lastIncorrectRep) {
         this.id = id;
         this.frontText = frontText;
         this.backText = backText;
         this.nextReviewDate = nextReviewDate;
         this.lastReviewDate = lastReviewDate;
         this.easiness = easiness;
+        this.numRepetitions = numRepetitions;
+        this.lastIncorrectRep = lastIncorrectRep;
+    }
+
+    /**
+     * Constructor
+     */
+    public Card(String frontText, String backText) {
+        this.frontText = frontText;
+        this.backText = backText;
     }
 
 
@@ -128,6 +171,22 @@ public class Card {
         this.easiness = easiness;
     }
 
+    public int getNumRepetitions() {
+        return numRepetitions;
+    }
+
+    public void setNumRepetitions(int numRepetitions) {
+        this.numRepetitions = numRepetitions;
+    }
+
+    public int getLastIncorrectRep() {
+        return lastIncorrectRep;
+    }
+
+    public void setLastIncorrectRep(int lastIncorrectRep) {
+        this.lastIncorrectRep = lastIncorrectRep;
+    }
+
 
     @Override
     public boolean equals(Object o) {
@@ -146,13 +205,19 @@ public class Card {
         if (Double.compare(card.easiness, easiness) != 0) {
             return false;
         }
-        if (!frontText.equals(card.frontText)) {
+        if (numRepetitions != card.numRepetitions) {
             return false;
         }
-        if (!backText.equals(card.backText)) {
+        if (lastIncorrectRep != card.lastIncorrectRep) {
             return false;
         }
-        if (!tags.equals(card.tags)) {
+        if (frontText != null ? !frontText.equals(card.frontText) : card.frontText != null) {
+            return false;
+        }
+        if (backText != null ? !backText.equals(card.backText) : card.backText != null) {
+            return false;
+        }
+        if (tags != null ? !tags.equals(card.tags) : card.tags != null) {
             return false;
         }
         if (lastReviewDate != null ? !lastReviewDate.equals(card.lastReviewDate) : card
@@ -169,13 +234,16 @@ public class Card {
         int result;
         long temp;
         result = id;
-        result = 31 * result + frontText.hashCode();
-        result = 31 * result + backText.hashCode();
-        result = 31 * result + tags.hashCode();
+        result = 31 * result + (frontText != null ? frontText.hashCode() : 0);
+        result = 31 * result + (backText != null ? backText.hashCode() : 0);
+        result = 31 * result + (tags != null ? tags.hashCode() : 0);
         result = 31 * result + (lastReviewDate != null ? lastReviewDate.hashCode() : 0);
         result = 31 * result + (nextReviewDate != null ? nextReviewDate.hashCode() : 0);
         temp = Double.doubleToLongBits(easiness);
         result = 31 * result + (int) (temp ^ (temp >>> 32));
+        result = 31 * result + numRepetitions;
+        result = 31 * result + lastIncorrectRep;
         return result;
     }
+
 }
