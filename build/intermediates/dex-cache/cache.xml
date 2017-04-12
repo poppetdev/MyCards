@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<items version="2" >
+
+    <item
+        is-multidex="true"
+        jar="/home/birb/Android/Sdk/extras/android/m2repository/com/android/support/support-annotations/25.3.1/support-annotations-25.3.1.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="bf8841d29fa39e077730e7a91222c2ce269fa7c9">
+        <dex dex="/home/birb/Documents/Mobile App Development/Project files/MyCards-master/app/build/intermediates/transforms/dex/debug/folders/1000/10/support-annotations-25.3.1_4a9e1aa2d7d7bd62ee3e73d2a40a11112d5e237e/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/home/birb/Documents/Mobile App Development/Project files/MyCards-master/app/build/intermediates/incremental-classes/debug/instant-run-bootstrap.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="bb5b047392ebef6a401158afeccc41b82dd47a3f">
+        <dex dex="/home/birb/Documents/Mobile App Development/Project files/MyCards-master/app/build/intermediates/transforms/dex/debug/folders/1000/10000/instant-run-bootstrap_193d093828f104a23f11bd4a05226441df174e06/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/home/birb/.android/build-cache/b866b62b9c8e29c6b40e5afe6085aed8149eebce/output/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="052f5f840f21174a3ecf6544130194e2652cbb73">
+        <dex dex="/home/birb/Documents/Mobile App Development/Project files/MyCards-master/app/build/intermediates/transforms/dex/debug/folders/1000/10/classes_50a595393cd9b46e60ffff2b37b3578b80acacbd/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/home/birb/.android/build-cache/7aad482723a3e1a47786c0095b7572be29e59dd1/output/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="4a26a1154d053ab11aaf4c3967c42a4d66390991">
+        <dex dex="/home/birb/Documents/Mobile App Development/Project files/MyCards-master/app/build/intermediates/transforms/dex/debug/folders/1000/10/classes_ce88922797665cf74423f00232325b76bf4ed5ee/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/home/birb/.android/build-cache/8d60d523918a272aa6cc7062410e008ca13af75c/output/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="efb8cb62d47d157c29d1521daac7eefd4cb881ee">
+        <dex dex="/home/birb/Documents/Mobile App Development/Project files/MyCards-master/app/build/intermediates/transforms/dex/debug/folders/1000/10/classes_49e465da3a0c52c4bce9caa46403dae818121e00/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/home/birb/.android/build-cache/8f47e7b64ccd13f570a3e584ed9890127532ee97/output/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="6ef31f1555bb4cc513ec8d52711365a8b89f3600">
+        <dex dex="/home/birb/Documents/Mobile App Development/Project files/MyCards-master/app/build/intermediates/transforms/dex/debug/folders/1000/10/classes_e15736c89a29376aef4ce34b8e06fc7de1c11bd1/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/home/birb/.android/build-cache/b0559712b78278091a550cac2eb65a0377bcc67a/output/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="45f697922e6f072daa12f8a2995dc77ab03c11da">
+        <dex dex="/home/birb/Documents/Mobile App Development/Project files/MyCards-master/app/build/intermediates/transforms/dex/debug/folders/1000/10/classes_cb58c386c3eb97bceeb408b2b7f10b14fcaa7758/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/home/birb/Documents/Mobile App Development/Project files/MyCards-master/app/build/intermediates/incremental-runtime-classes/debug/instant-run.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="510aa6efc159983dfbffa676a0dae37568c0a46f">
+        <dex dex="/home/birb/Documents/Mobile App Development/Project files/MyCards-master/app/build/intermediates/transforms/dex/debug/folders/1000/10000/instant-run_abfdd0ea68ef02c3e2ab85f794f2065dcc3ec656/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/home/birb/.android/build-cache/033194cf78bea623f8eb5f3271fc4887158dadc9/output/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="da27a32db6af8954ee8061537c7d476fcb1df46f">
+        <dex dex="/home/birb/Documents/Mobile App Development/Project files/MyCards-master/app/build/intermediates/transforms/dex/debug/folders/1000/10/classes_7b1e86fd85b292f8ab78e29f9ae29ebf1cfb7136/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/home/birb/.android/build-cache/1ad897df69fcf254b489565a1cfd2463ddd46a1f/output/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="47635644d0d5c103c1dd8360549eb9ba3225c7d3">
+        <dex dex="/home/birb/Documents/Mobile App Development/Project files/MyCards-master/app/build/intermediates/transforms/dex/debug/folders/1000/10/classes_53cc073f2b8d785b609cc5327d179b018ed7b941/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/home/birb/.android/build-cache/58152cf92a2ced106cde1e5ee04107705bfb8754/output/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="d7c42c80f6509b9ea4db28ca7859ffae08ec5741">
+        <dex dex="/home/birb/Documents/Mobile App Development/Project files/MyCards-master/app/build/intermediates/transforms/dex/debug/folders/1000/10/classes_506f2b330d090a5395d9db58e7a749b231876ebb/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/home/birb/.android/build-cache/ab50717b151102bad5128035ad06475ee883558a/output/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="150252b33b00274cc868578ade018fda0d43a3eb">
+        <dex dex="/home/birb/Documents/Mobile App Development/Project files/MyCards-master/app/build/intermediates/transforms/dex/debug/folders/1000/10/classes_b940a4b51aba97094a9fa9b204570e0b5d28ab0d/classes.dex" />
+    </item>
+
+</items>

@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+
+    android:background="@drawable/bkgrnd_with_border"
+    tools:context="com.group13.androidsdk.mycards.MainActivity">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_gravity="center">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="128dp"
+            android:layout_marginBottom="32dp"
+            android:src="@drawable/big_logo"
+            android:layout_gravity="center"/>
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginBottom="16dp"
+            android:background="#FFFFFF"
+            android:textColor="#29c99d"
+            android:text="Start Review"
+            android:id="@+id/btnStReview"
+            android:paddingLeft="8dp"
+            android:paddingRight="8dp"/>
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginBottom="16dp"
+            android:background="#FFFFFF"
+            android:textColor="#29c99d"
+            android:text="Browse Cards"
+            android:id="@+id/btnBrowse"
+            android:paddingLeft="8dp"
+            android:paddingRight="8dp"/>
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginBottom="16dp"
+            android:background="#FFFFFF"
+            android:textColor="#29c99d"
+            android:text="Manage Settings"
+            android:id="@+id/btnSettings"
+            android:paddingLeft="8dp"
+            android:paddingRight="8dp"/>
+
+    </LinearLayout>
+
+
+
+</LinearLayout>
