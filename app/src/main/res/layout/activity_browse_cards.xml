@@ -35,6 +35,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:background="#FFFFFF"
+        android:onClick="addNewCard"
         android:text="Add new card"
         android:textColor="#26c99d"
         />

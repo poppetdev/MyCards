@@ -16,14 +16,39 @@
 
 package com.group13.androidsdk.mycards;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.ListView;
+import android.widget.Spinner;
 
+
+//TODO implement spinner handler, retrieving cards by tag, view recycling
 public class BrowseCardsActivity extends AppCompatActivity {
-
+    Button newCard;
+    Spinner tagList;
+    ListView cardView;
+    ArrayAdapter<Card> cardArrayAdapter;
+    CardBrowser browser;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_browse_cards);
+
+        newCard = (Button)findViewById(R.id.btnNewCard);
+        tagList = (Spinner)findViewById(R.id.spinTags);
+        cardView = (ListView)findViewById(R.id.lvCards);
+        browser = new CardBrowser();
+        Card[] cardArray;
+
+    }
+    public void addNewCard(View view){
+        if(view.getId() == R.id.btnNewCard){
+            Intent toNewCard = new Intent(this, NewCardActivity.class);
+            startActivity(toNewCard);
+        }
     }
 }
