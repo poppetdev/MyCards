@@ -18,12 +18,42 @@ package com.group13.androidsdk.mycards;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
+import android.widget.Button;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 
 public class SettingsActivity extends AppCompatActivity {
-
+    RadioGroup toggleDND;
+    RadioButton noDisturb, yesDisturb;
+    Button toRules, newRule;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
+        toggleDND = (RadioGroup)findViewById(R.id.rgrpDisturbView);
+        noDisturb = (RadioButton)findViewById(R.id.rbNoDisturb);
+        yesDisturb = (RadioButton)findViewById(R.id.rbYesDisturb);
+        toRules = (Button)findViewById(R.id.btnViewRules);
+        newRule = (Button)findViewById(R.id.btnNewRule);
+        yesDisturb.setChecked(true);
+
+        //instantiate any other object required by NSM
+        //NotificationSettingsManager nsm = new NotificationSettingsManager();
+        //nsm.setDoNotDisturbEnabled(false);              //DO NOT DISTURB disabled by default
+
+        //handle radioButtons
+
+        //handle buttons
+
     }
+    public void toggleDND(View view){
+        //stuff
+    }
+
+    public void ruleButtons(View view){
+        //stuff
+    }
+
+
 }

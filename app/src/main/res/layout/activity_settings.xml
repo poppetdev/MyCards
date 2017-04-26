@@ -41,6 +41,7 @@
         android:text="Do Not Disturb"
         android:textColor="#29c99d"/>
     <RadioGroup
+        android:id="@+id/rgrpDisturbView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
@@ -51,12 +52,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginRight="8dp"
+            android:onClick="toggleDND"
             android:text="On"
             android:textColor="#ffffff"/>
         <RadioButton
             android:id="@+id/rbNoDisturb"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:onClick="toggleDND"
             android:text="Off"
             android:textColor="#ffffff"/>
     </RadioGroup>
@@ -78,6 +81,7 @@
         android:layout_gravity="center"
         android:layout_marginBottom="8dp"
         android:background="#FFFFFF"
+        android:onClick="ruleButtons"
         android:paddingLeft="8dp"
         android:paddingRight="8dp"
         android:text="View rules"
@@ -89,6 +93,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:background="#FFFFFF"
+        android:onClick="ruleButtons"
         android:paddingLeft="8dp"
         android:paddingRight="8dp"
         android:text="New rule"
